@@ -47,7 +47,7 @@ class HashProvider {
   }
 
   public function generateEntropy() {
-    $entropy = mcrypt_create_iv(32, $this->getRandomizer());
+    $entropy = random_bytes(32);
     $entropy .= uniqid(mt_rand(), true);
 
     return $entropy;
