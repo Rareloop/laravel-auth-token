@@ -39,19 +39,20 @@ class AuthTokenServiceProvider extends ServiceProvider
 	{
 		$app = $this->app;
 
-		$app->singleton('tappleby.auth.token', function ($app) {
+		$app->singleton(AuthToken::class, function ($app) {
 			return new AuthTokenManager($app);
 		});
 
-		$app->singleton('tappleby.auth.token.filter', function ($app) {
-			$driver = $app['tappleby.auth.token']->driver();
+		$app->singleton(AuthTokenFilter::class, function ($app) {
+			$driver = $app->make(AuthToken::class)->driver();
 			$events = $app['events'];
 
 			return new AuthTokenFilter($driver, $events);
 		});
 
-		$app->singleton('\Tappleby\AuthToken\AuthTokenController', function ($app) {
-			$driver = $app['tappleby.auth.token']->driver();
+		$app->singleton(AuthTokenController::class, function ($app) {
+			$driver = $app->make(AuthToken::class)->driver();
+
 			$credsFormatter = $app['config']->get('authtoken.format_credentials', null);
 			$events = $app['events'];
 
